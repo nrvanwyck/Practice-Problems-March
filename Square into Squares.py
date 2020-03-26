@@ -30,19 +30,15 @@
 # Very often xk will be n-1.
 
 def decompose(n):
-    target = n**2
-    choices = set([i for i in range(1, n)])
-    solution = set()
-    solved = False
-    while True:
-        valid_choices = set([choice for choice in choices if (
-            choice <= (target**.5)) and (choice not in solution)])
-        if len(valid_choices) == 0:
-            return None
-        else:
-            to_append = max(valid_choices)
-            solution.add(to_append)
-            print(solution)
-            target -= to_append**2
-            if target == 0:
-                return sorted(solution)
+    target = (n ** 2)
+    solution = [n]
+    while len(solution) > 0:
+        upper_bound = solution.pop()
+        current_sum = sum([(elem ** 2) for elem in solution])
+        for i in reversed(range(1, upper_bound)):
+            if (current_sum + (i ** 2)) <= target:
+                solution.append(i)
+                current_sum = sum([(elem ** 2) for elem in solution])
+                if current_sum == target:
+                    return sorted(solution)
+    return None
